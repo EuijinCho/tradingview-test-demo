@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/tradingview-test/static/css/main.c4908474.chunk.css",
-    "main.js": "/tradingview-test/static/js/main.454671a9.chunk.js",
-    "main.js.map": "/tradingview-test/static/js/main.454671a9.chunk.js.map",
-    "runtime-main.js": "/tradingview-test/static/js/runtime-main.b58b7df1.js",
-    "runtime-main.js.map": "/tradingview-test/static/js/runtime-main.b58b7df1.js.map",
-    "static/js/2.ad3d9c5c.chunk.js": "/tradingview-test/static/js/2.ad3d9c5c.chunk.js",
-    "static/js/2.ad3d9c5c.chunk.js.map": "/tradingview-test/static/js/2.ad3d9c5c.chunk.js.map",
-    "static/js/3.e1bb72a8.chunk.js": "/tradingview-test/static/js/3.e1bb72a8.chunk.js",
-    "static/js/3.e1bb72a8.chunk.js.map": "/tradingview-test/static/js/3.e1bb72a8.chunk.js.map",
-    "index.html": "/tradingview-test/index.html",
-    "static/css/main.c4908474.chunk.css.map": "/tradingview-test/static/css/main.c4908474.chunk.css.map",
-    "static/js/2.ad3d9c5c.chunk.js.LICENSE.txt": "/tradingview-test/static/js/2.ad3d9c5c.chunk.js.LICENSE.txt"
+    "main.css": "/tradingview-test-demo/static/css/main.c4908474.chunk.css",
+    "main.js": "/tradingview-test-demo/static/js/main.454671a9.chunk.js",
+    "main.js.map": "/tradingview-test-demo/static/js/main.454671a9.chunk.js.map",
+    "runtime-main.js": "/tradingview-test-demo/static/js/runtime-main.16b134b5.js",
+    "runtime-main.js.map": "/tradingview-test-demo/static/js/runtime-main.16b134b5.js.map",
+    "static/js/2.e5cc7e7c.chunk.js": "/tradingview-test-demo/static/js/2.e5cc7e7c.chunk.js",
+    "static/js/2.e5cc7e7c.chunk.js.map": "/tradingview-test-demo/static/js/2.e5cc7e7c.chunk.js.map",
+    "static/js/3.e1bb72a8.chunk.js": "/tradingview-test-demo/static/js/3.e1bb72a8.chunk.js",
+    "static/js/3.e1bb72a8.chunk.js.map": "/tradingview-test-demo/static/js/3.e1bb72a8.chunk.js.map",
+    "index.html": "/tradingview-test-demo/index.html",
+    "static/css/main.c4908474.chunk.css.map": "/tradingview-test-demo/static/css/main.c4908474.chunk.css.map",
+    "static/js/2.e5cc7e7c.chunk.js.LICENSE.txt": "/tradingview-test-demo/static/js/2.e5cc7e7c.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.b58b7df1.js",
-    "static/js/2.ad3d9c5c.chunk.js",
+    "static/js/runtime-main.16b134b5.js",
+    "static/js/2.e5cc7e7c.chunk.js",
     "static/css/main.c4908474.chunk.css",
     "static/js/main.454671a9.chunk.js"
   ]
