@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/tradingview-test/static/css/main.c4908474.chunk.css",
-    "main.js": "/tradingview-test/static/js/main.c718ac3b.chunk.js",
-    "main.js.map": "/tradingview-test/static/js/main.c718ac3b.chunk.js.map",
+    "main.js": "/tradingview-test/static/js/main.454671a9.chunk.js",
+    "main.js.map": "/tradingview-test/static/js/main.454671a9.chunk.js.map",
     "runtime-main.js": "/tradingview-test/static/js/runtime-main.b58b7df1.js",
     "runtime-main.js.map": "/tradingview-test/static/js/runtime-main.b58b7df1.js.map",
     "static/js/2.ad3d9c5c.chunk.js": "/tradingview-test/static/js/2.ad3d9c5c.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.b58b7df1.js",
     "static/js/2.ad3d9c5c.chunk.js",
     "static/css/main.c4908474.chunk.css",
-    "static/js/main.c718ac3b.chunk.js"
+    "static/js/main.454671a9.chunk.js"
   ]
 }
