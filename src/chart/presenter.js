@@ -150,9 +150,9 @@ const LineTooltipItem = styled.div`
     top: 0px;
     left: 0px;
 
-    ${({color,removed}) => `
+    ${({color,removed,visible}) => `
         color: ${color};
-        display: ${removed ? 'none' : 'block'};
+        display: ${(removed || !visible) ? 'none' : 'block'};
     `}
 `;
 
@@ -210,7 +210,7 @@ const Presenter = ({
                     </TooltipContainer>
                     <LineTooltipContainer ref={setLineTooltipCanvasRef}>
                         {
-                            charts.map((d,i) => <LineTooltipItem text={d.symbol} removed={d.removed} color={d.color} key={'ttti'+i}/>)
+                            charts.map((d,i) => <LineTooltipItem text={d.symbol} removed={d.removed} color={d.color} key={'ttti'+i} visible={d.visible}/>)
                         }
                     </LineTooltipContainer>
                 </ChartCanvas>

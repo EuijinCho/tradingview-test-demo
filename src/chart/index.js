@@ -81,7 +81,7 @@ class Chart extends React.Component {
             const { x, y } = point;
             const tooltips = Array.from(this.tootipCanvasRef.children);
             const lineTooltips = Array.from(this.lineTooltipCanvasRef.children);
-            charts.forEach(({symbol,series,removed,data},i) => {
+            charts.forEach(({symbol,series,removed,data,visible},i) => {
                 const tooltip = tooltips[i];
                 const lineTooltip = lineTooltips[i];
 
@@ -98,6 +98,7 @@ class Chart extends React.Component {
                 lineTooltip.innerText = `${percent.toFixed(2)}%`;
                 lineTooltip.style.left = (x - 30) + 'px';
                 lineTooltip.style.top = (coordinate - 50) + 'px';
+                lineTooltip.style.display = visible ? 'block' : 'none';
             });
 
             const tooltipsWidth = this.tootipCanvasRef.clientWidth;
