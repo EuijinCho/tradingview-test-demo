@@ -15,6 +15,7 @@ class Chart extends React.Component {
 
         this.chartCanvasRef = null;
         this.tootipCanvasRef = null;
+        this.lineTooltipCanvasRef = null;
         this.chart = null;
         this.defaultSymbol = 'AAPL';
         this.lastDate = moment('2021-07-15');
@@ -36,11 +37,11 @@ class Chart extends React.Component {
             loading: true,
             interval: 1,
             charts: [
-                { symbol: '', color: 'red', series: undefined, data: [], removed: true },
-                { symbol: '', color: 'green', series: undefined, data: [], removed: true },
-                { symbol: '', color: 'blue', series: undefined, data: [], removed: true },
-                { symbol: '', color: 'black', series: undefined, data: [], removed: true },
-                { symbol: '', color: 'fuchsia', series: undefined, data: [], removed: true }
+                { symbol: '', color: 'red', series: undefined, data: [], removed: true, visible: true, hightlight: false },
+                { symbol: '', color: 'green', series: undefined, data: [], removed: true, visible: true, hightlight: false },
+                { symbol: '', color: 'blue', series: undefined, data: [], removed: true, visible: true, hightlight: false },
+                { symbol: '', color: 'black', series: undefined, data: [], removed: true, visible: true, hightlight: false },
+                { symbol: '', color: 'fuchsia', series: undefined, data: [], removed: true, visible: true, hightlight: false }
             ]
         };
     }
@@ -67,29 +68,38 @@ class Chart extends React.Component {
             }           
         });
 
-        this.chart.subscribeCrosshairMove(({time, point, seriesPrices}) => {
+        this.chart.subscribeCrosshairMove((param) => {
+            const {time, point, seriesPrices} = param;
             const { charts } = this.state;
             if (!point || (seriesPrices.size === 0)) {
                 this.tootipCanvasRef.style.display = 'none';
+                this.lineTooltipCanvasRef.style.display = 'none';
       
                 return;
             }
 
+            const { x, y } = point;
             const tooltips = Array.from(this.tootipCanvasRef.children);
+            const lineTooltips = Array.from(this.lineTooltipCanvasRef.children);
             charts.forEach(({symbol,series,removed,data},i) => {
                 const tooltip = tooltips[i];
+                const lineTooltip = lineTooltips[i];
 
-                if (!series || removed || !tooltip) return;
+                if (!series || removed || !tooltip || !lineTooltip) return;
 
                 const { from } = this.chart.timeScale().getVisibleRange();
                 const value = seriesPrices.get(series);
+                const coordinate = series.priceToCoordinate(value);
                 const { value: initValue } = data.find(({time: { day,month,year} }) => (from.day === day) && (from.month === month) && (from.year === year));
                 const percent = ((value - initValue) * 100 / initValue);
                 
                 tooltip.innerText = `${symbol}: $${value.toFixed(2)}, ${percent.toFixed(2)}%`;
+
+                lineTooltip.innerText = `${percent.toFixed(2)}%`;
+                lineTooltip.style.left = (x - 30) + 'px';
+                lineTooltip.style.top = (coordinate - 50) + 'px';
             });
 
-            const { x } = point;
             const tooltipsWidth = this.tootipCanvasRef.clientWidth;
             const chartAreaWidth = this.chart.options().width - this.chart.priceScale().width();
             const tooltipX = x-(tooltipsWidth/2);
@@ -100,6 +110,8 @@ class Chart extends React.Component {
 
             this.tootipCanvasRef.style.left = left + 'px';
             this.tootipCanvasRef.style.display = 'block';
+
+            this.lineTooltipCanvasRef.style.display = 'block';
         });
 
         this.setSymbols();
@@ -128,7 +140,7 @@ class Chart extends React.Component {
         const lineSeries = this.chart.addLineSeries({ lastValueVisible: false, color });
         lineSeries.setData(series);
 
-        charts.push({ symbol, color, series: lineSeries, data: series, removed: false });
+        charts.push({ symbol, color, series: lineSeries, data: series, removed: false, visible: true, hightlight: false });
 
         this.setState({charts});
     }
@@ -143,7 +155,7 @@ class Chart extends React.Component {
             if (d.symbol === symbol && this.chart) {
                 this.chart.removeSeries(d.series);
 
-                return { symbol: '', series: undefined, removed: true, data: [], color: d.color };
+                return { symbol: '', series: undefined, removed: true, data: [], color: d.color, visible: true, hightlight: false };
             }
 
             return d;
@@ -178,6 +190,40 @@ class Chart extends React.Component {
         }
     }
 
+    onVisibleClick = (symbol) => () => {
+        const { charts } = this.state;
+        const updateCharts = charts.map((d) => {
+            if (d.symbol === symbol && d.series) {
+                d.series.applyOptions({
+                    visible: !d.visible
+                })
+
+                return { ...d, visible: !d.visible };
+            }
+
+            return d;
+        })
+
+        this.setState({charts: updateCharts});
+    }
+
+    onHighlightClick = (symbol) => () => {
+        const { charts } = this.state;
+        const updateCharts = charts.map((d) => {
+            if (d.symbol === symbol && d.series) {
+                d.series.applyOptions({
+                    lineWidth: d.hightlight ? 3 : 5
+                })
+
+                return { ...d, hightlight: !d.hightlight };
+            }
+
+            return d;
+        })
+
+        this.setState({charts: updateCharts});
+    }
+
     getFilteredSeries = ({data=[],value,sub}) => {
         let nextFilterDate;
     
@@ -201,13 +247,12 @@ class Chart extends React.Component {
         )(data)
     };
 
-    
-
     render() {
         return (
             <Presenter
                 setRef={(ref) => this.chartCanvasRef = ref}
                 setTooltipRef={(ref) => this.tootipCanvasRef = ref}
+                setLineTooltipCanvasRef={(ref) => this.lineTooltipCanvasRef = ref}
                 ranges={this.ranges}
                 intervals={this.intervals}
                 state={this.state}
@@ -225,10 +270,11 @@ class Chart extends React.Component {
                 }}
                 onRangeClick={this.onRangeClick}
                 onIntervalClick={this.onIntervalClick}
+                onVisibleClick={this.onVisibleClick}
+                onHighlightClick={this.onHighlightClick}
             />
         )
     }
-
 }
 
 export default Chart;

@@ -95,6 +95,16 @@ const CompareSymbolLine = styled.div`
     border-bottom: 1px solid black;
 `;
 
+const VisibleButton = styled.button`
+    width: 60px;
+    height: 20px;
+    margin-left: 12px;
+`;
+
+const HighlightButton = styled(VisibleButton)`
+    width: 70px;
+`;
+
 const RemoveButton = styled.button`
     width: 40px;
     height: 20px;
@@ -124,10 +134,33 @@ const TooltipItem = styled.div`
     `}
 `;
 
+const LineTooltipContainer = styled.div`
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 10;
+    pointer-events: none;
+`;
+
+const LineTooltipItem = styled.div`
+    width: 60px;
+    height: 10px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+
+    ${({color,removed}) => `
+        color: ${color};
+        display: ${removed ? 'none' : 'block'};
+    `}
+`;
+
 
 const Presenter = ({
     setRef,
     setTooltipRef,
+    setLineTooltipCanvasRef,
     ranges,
     intervals,
     state: {
@@ -141,7 +174,9 @@ const Presenter = ({
     onRemoveSymbolClick,
     onResetClick,
     onRangeClick,
-    onIntervalClick
+    onIntervalClick,
+    onVisibleClick,
+    onHighlightClick
  }) => {
     const compares = charts.filter((d) => !d.removed);
     const comparedSymbols = charts.map(({symbol: s}) => s);
@@ -173,6 +208,11 @@ const Presenter = ({
                             charts.map((d,i) => <TooltipItem text={d.symbol} removed={d.removed} color={d.color} key={'tti'+i}/>)
                         }
                     </TooltipContainer>
+                    <LineTooltipContainer ref={setLineTooltipCanvasRef}>
+                        {
+                            charts.map((d,i) => <LineTooltipItem text={d.symbol} removed={d.removed} color={d.color} key={'ttti'+i}/>)
+                        }
+                    </LineTooltipContainer>
                 </ChartCanvas>
             </ChartContainer>
             <RightContainer>
@@ -198,9 +238,10 @@ const Presenter = ({
                             <CompareSymbolLine style={{color: d.color}} key={`csl`+i}>
                                 <div style={{width: '50px'}}>{d.symbol}</div>
                                 {
-                                    d.symbol !== symbol ? 
-                                    <RemoveButton onClick={onRemoveSymbolClick(d.symbol)}>삭제</RemoveButton> : null
+                                    <RemoveButton onClick={onRemoveSymbolClick(d.symbol)} style={{visibility: d.symbol !== symbol ? 'visible' : 'hidden'}}>삭제</RemoveButton>
                                 }
+                                <VisibleButton onClick={onVisibleClick(d.symbol)}>{d.visible ? '숨기기' : '보기'}</VisibleButton>
+                                <HighlightButton onClick={onHighlightClick(d.symbol)}>{d.hightlight ? '강조취소' : '강조하기'}</HighlightButton>
                             </CompareSymbolLine>
                         )
                     }
